@@ -4,33 +4,38 @@ data_location = os.path.join(__dir__, "system_verilog")
 src = "https://github.com/openhwgroup/cv32e41p"
 
 # Module version
-version_str = "0.0.post1860"
-version_tuple = (0, 0, 1860)
+version_str = "0.0.post1861"
+version_tuple = (0, 0, 1861)
 try:
     from packaging.version import Version as V
-    pversion = V("0.0.post1860")
+    pversion = V("0.0.post1861")
 except ImportError:
     pass
 
 # Data version info
-data_version_str = "0.0.post1734"
-data_version_tuple = (0, 0, 1734)
+data_version_str = "0.0.post1735"
+data_version_tuple = (0, 0, 1735)
 try:
     from packaging.version import Version as V
-    pdata_version = V("0.0.post1734")
+    pdata_version = V("0.0.post1735")
 except ImportError:
     pass
-data_git_hash = "4b6befd76b09ffd3294d5936b276891682b19c2e"
-data_git_describe = "v0.0-1734-g4b6befd"
+data_git_hash = "d432b96f958db9145ffb5a8d80ecc2bd84d96f47"
+data_git_describe = "v0.0-1735-gd432b96"
 data_git_msg = """\
-commit 4b6befd76b09ffd3294d5936b276891682b19c2e
-Merge: f0353ff 188e8a5
-Author: Pasquale Davide Schiavone <davide@openhwgroup.org>
-Date:   Wed Feb 9 18:41:31 2022 +0100
+commit d432b96f958db9145ffb5a8d80ecc2bd84d96f47
+Author: Ibrahim Abu Kharmeh <ibrahim.abu.kharmeh@huawei.com>
+Date:   Mon Feb 14 16:56:26 2022 +0000
 
-    Merge pull request #15 from abukharmeh/master
+    Convert documentation to CV32E41P (#19)
     
-    1) Update the assertions and tracer ifdefs
+    * Convert documentation to CV32E41P
+    
+    * Update links and Verible version
+    
+    * Add comments about the RTL status
+    
+    Co-authored-by: Tariq Kurd <tariq.kurd@huawei.com>
 
 """
 
