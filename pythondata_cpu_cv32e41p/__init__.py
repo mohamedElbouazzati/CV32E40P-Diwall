@@ -4,38 +4,42 @@ data_location = os.path.join(__dir__, "system_verilog")
 src = "https://github.com/openhwgroup/cv32e41p"
 
 # Module version
-version_str = "0.0.post1861"
-version_tuple = (0, 0, 1861)
+version_str = "0.0.post1862"
+version_tuple = (0, 0, 1862)
 try:
     from packaging.version import Version as V
-    pversion = V("0.0.post1861")
+    pversion = V("0.0.post1862")
 except ImportError:
     pass
 
 # Data version info
-data_version_str = "0.0.post1735"
-data_version_tuple = (0, 0, 1735)
+data_version_str = "0.0.post1736"
+data_version_tuple = (0, 0, 1736)
 try:
     from packaging.version import Version as V
-    pdata_version = V("0.0.post1735")
+    pdata_version = V("0.0.post1736")
 except ImportError:
     pass
-data_git_hash = "d432b96f958db9145ffb5a8d80ecc2bd84d96f47"
-data_git_describe = "v0.0-1735-gd432b96"
+data_git_hash = "cf0ab06e28a7845d0ce736b44a27d1bfab47074a"
+data_git_describe = "v0.0-1736-gcf0ab06"
 data_git_msg = """\
-commit d432b96f958db9145ffb5a8d80ecc2bd84d96f47
+commit cf0ab06e28a7845d0ce736b44a27d1bfab47074a
 Author: Ibrahim Abu Kharmeh <ibrahim.abu.kharmeh@huawei.com>
-Date:   Mon Feb 14 16:56:26 2022 +0000
+Date:   Thu Feb 17 12:03:11 2022 +0000
 
-    Convert documentation to CV32E41P (#19)
+    Merged decoder (#17)
     
-    * Convert documentation to CV32E41P
+    * Merge the decoder and adds Zce parameters
     
-    * Update links and Verible version
+    * Update flist
     
-    * Add comments about the RTL status
+    * Trimp trailing spaces and remove redundant comments
     
-    Co-authored-by: Tariq Kurd <tariq.kurd@huawei.com>
+    * Run Verible on all SV files
+    
+    * Remove redndant comments and update march id
+    
+    * Rerun verible on all files
 
 """
 
