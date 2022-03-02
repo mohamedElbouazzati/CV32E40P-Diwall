@@ -4,42 +4,30 @@ data_location = os.path.join(__dir__, "system_verilog")
 src = "https://github.com/openhwgroup/cv32e41p"
 
 # Module version
-version_str = "0.0.post1862"
-version_tuple = (0, 0, 1862)
+version_str = "0.0.post1863"
+version_tuple = (0, 0, 1863)
 try:
     from packaging.version import Version as V
-    pversion = V("0.0.post1862")
+    pversion = V("0.0.post1863")
 except ImportError:
     pass
 
 # Data version info
-data_version_str = "0.0.post1736"
-data_version_tuple = (0, 0, 1736)
+data_version_str = "0.0.post1737"
+data_version_tuple = (0, 0, 1737)
 try:
     from packaging.version import Version as V
-    pdata_version = V("0.0.post1736")
+    pdata_version = V("0.0.post1737")
 except ImportError:
     pass
-data_git_hash = "cf0ab06e28a7845d0ce736b44a27d1bfab47074a"
-data_git_describe = "v0.0-1736-gcf0ab06"
+data_git_hash = "43b04003bf9be75a6169a313243c7ea188c08d2e"
+data_git_describe = "v0.0-1737-g43b0400"
 data_git_msg = """\
-commit cf0ab06e28a7845d0ce736b44a27d1bfab47074a
+commit 43b04003bf9be75a6169a313243c7ea188c08d2e
 Author: Ibrahim Abu Kharmeh <ibrahim.abu.kharmeh@huawei.com>
-Date:   Thu Feb 17 12:03:11 2022 +0000
+Date:   Wed Mar 2 14:03:25 2022 +0000
 
-    Merged decoder (#17)
-    
-    * Merge the decoder and adds Zce parameters
-    
-    * Update flist
-    
-    * Trimp trailing spaces and remove redundant comments
-    
-    * Run Verible on all SV files
-    
-    * Remove redndant comments and update march id
-    
-    * Rerun verible on all files
+    Adds simple ZCE instructions (#18)
 
 """
 
