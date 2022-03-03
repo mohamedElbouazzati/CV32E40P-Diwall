@@ -4,30 +4,30 @@ data_location = os.path.join(__dir__, "system_verilog")
 src = "https://github.com/openhwgroup/cv32e41p"
 
 # Module version
-version_str = "0.0.post1863"
-version_tuple = (0, 0, 1863)
+version_str = "0.0.post1864"
+version_tuple = (0, 0, 1864)
 try:
     from packaging.version import Version as V
-    pversion = V("0.0.post1863")
+    pversion = V("0.0.post1864")
 except ImportError:
     pass
 
 # Data version info
-data_version_str = "0.0.post1737"
-data_version_tuple = (0, 0, 1737)
+data_version_str = "0.0.post1738"
+data_version_tuple = (0, 0, 1738)
 try:
     from packaging.version import Version as V
-    pdata_version = V("0.0.post1737")
+    pdata_version = V("0.0.post1738")
 except ImportError:
     pass
-data_git_hash = "43b04003bf9be75a6169a313243c7ea188c08d2e"
-data_git_describe = "v0.0-1737-g43b0400"
+data_git_hash = "61c9913dc41d0cbec57f8919e29ae294cd370187"
+data_git_describe = "v0.0-1738-g61c9913"
 data_git_msg = """\
-commit 43b04003bf9be75a6169a313243c7ea188c08d2e
+commit 61c9913dc41d0cbec57f8919e29ae294cd370187
 Author: Ibrahim Abu Kharmeh <ibrahim.abu.kharmeh@huawei.com>
-Date:   Wed Mar 2 14:03:25 2022 +0000
+Date:   Thu Mar 3 15:52:59 2022 +0000
 
-    Adds simple ZCE instructions (#18)
+    Fix lint warnings (#20)
 
 """
 
