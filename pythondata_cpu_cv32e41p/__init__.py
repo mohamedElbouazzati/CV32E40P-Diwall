@@ -4,30 +4,30 @@ data_location = os.path.join(__dir__, "system_verilog")
 src = "https://github.com/openhwgroup/cv32e41p"
 
 # Module version
-version_str = "0.0.post1864"
-version_tuple = (0, 0, 1864)
+version_str = "0.0.post1865"
+version_tuple = (0, 0, 1865)
 try:
     from packaging.version import Version as V
-    pversion = V("0.0.post1864")
+    pversion = V("0.0.post1865")
 except ImportError:
     pass
 
 # Data version info
-data_version_str = "0.0.post1738"
-data_version_tuple = (0, 0, 1738)
+data_version_str = "0.0.post1739"
+data_version_tuple = (0, 0, 1739)
 try:
     from packaging.version import Version as V
-    pdata_version = V("0.0.post1738")
+    pdata_version = V("0.0.post1739")
 except ImportError:
     pass
-data_git_hash = "61c9913dc41d0cbec57f8919e29ae294cd370187"
-data_git_describe = "v0.0-1738-g61c9913"
+data_git_hash = "f22dca3090069089cf17eb3d16c90918b7157130"
+data_git_describe = "v0.0-1739-gf22dca3"
 data_git_msg = """\
-commit 61c9913dc41d0cbec57f8919e29ae294cd370187
+commit f22dca3090069089cf17eb3d16c90918b7157130
 Author: Ibrahim Abu Kharmeh <ibrahim.abu.kharmeh@huawei.com>
-Date:   Thu Mar 3 15:52:59 2022 +0000
+Date:   Mon Mar 7 16:20:15 2022 +0000
 
-    Fix lint warnings (#20)
+    Change PULP_ZFINX to ZFINX (#21)
 
 """
 
