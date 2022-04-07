@@ -4,30 +4,30 @@ data_location = os.path.join(__dir__, "system_verilog")
 src = "https://github.com/openhwgroup/cv32e41p"
 
 # Module version
-version_str = "0.0.post1866"
-version_tuple = (0, 0, 1866)
+version_str = "0.0.post1867"
+version_tuple = (0, 0, 1867)
 try:
     from packaging.version import Version as V
-    pversion = V("0.0.post1866")
+    pversion = V("0.0.post1867")
 except ImportError:
     pass
 
 # Data version info
-data_version_str = "0.0.post1740"
-data_version_tuple = (0, 0, 1740)
+data_version_str = "0.0.post1741"
+data_version_tuple = (0, 0, 1741)
 try:
     from packaging.version import Version as V
-    pdata_version = V("0.0.post1740")
+    pdata_version = V("0.0.post1741")
 except ImportError:
     pass
-data_git_hash = "f1d53463befa1ab91c8b00ba537d2e0f09ab9882"
-data_git_describe = "v0.0-1740-gf1d5346"
+data_git_hash = "bda060eee5bfb22fdbe55029c5e3cf1b62724fff"
+data_git_describe = "v0.0-1741-gbda060e"
 data_git_msg = """\
-commit f1d53463befa1ab91c8b00ba537d2e0f09ab9882
+commit bda060eee5bfb22fdbe55029c5e3cf1b62724fff
 Author: Ibrahim Abu Kharmeh <ibrahim.abu.kharmeh@huawei.com>
-Date:   Wed Mar 23 08:31:01 2022 +0000
+Date:   Thu Apr 7 11:28:49 2022 +0100
 
-    Complete merging the decoder (#22)
+    Remove PULP build status from README (#25)
 
 """
 
