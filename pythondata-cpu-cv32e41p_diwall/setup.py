@@ -3,10 +3,10 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-from pythondata_cpu_cv32e41p import version_str
+from pythondata_cpu_cv32e41p_diwall import version_str
 
 setuptools.setup(
-    name="pythondata-cpu-cv32e41p",
+    name="pythondata-cpu-cv32e41p_diwall",
     version=version_str,
     author="LiteX Authors",
     author_email="litex@googlegroups.com",
@@ -24,7 +24,7 @@ Python module containing system_verilog files for CV32E41P cpu.""",
     zip_safe=False,
     packages=setuptools.find_packages(),
     package_data={
-    	'cpu_cv32e41p': ['cpu_cv32e41p/system_verilog/**'],
+    	'cpu_cv32e41p_diwall': ['cpu_cv32e41p/system_verilog/**'],
     },
     include_package_data=True,
     project_urls={

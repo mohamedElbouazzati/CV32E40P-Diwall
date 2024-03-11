@@ -1,2 +1,0 @@
-graft pythondata_cpu_cv32e41p/system_verilog/
-global-exclude *.py[cod]
