@@ -27,11 +27,12 @@
     |   |--- JMP_STALL >  31.00
     |   |   |--- class: Stack overflow
 */
+(* DONT_TOUCH = 1 *)
 module Detector(
     output logic [1:0]          alert,
     input logic                 rst_h,
     input logic                clk_h,
-    input  [31:0][63:0]   HPM,
+    input  [1:0][63:0]   HPM,
     output logic            endD,   
     input logic             enableD
     
@@ -39,22 +40,24 @@ module Detector(
     
     //integer K1 = 10770.50;
     //integer K2 = 31.00;
-    integer K1 = 55;
-    integer K2 = 595;
-    integer alert_counter = 0;
-    integer Cycles,Minstret,JMP_STALL,IMISS,LD,ST,JUMP, LD_STALL, BRANCH, BRANCH_TAKEN, COMP_INSTR;
-    enum int unsigned {Monitor = 0, Analyze = 1 } state, next_state;    // start of detection, heap overflow, legitime, stack overflow
+    localparam K1 = 55;
+    localparam K2 = 595;
+    logic [31:0] alert_counter = 0;
+
+   // enum int unsigned {Monitor = 0, Analyze = 1 } state, next_state;    // start of detection, heap overflow, legitime, stack overflow
+   typedef enum logic [1:0] {Analyze=2'b00, Monitor=2'b10} state;
+   state next_state;
     //enum int unsigned {start = 0, HBO = 1,LEG = 2, SBO = 3 } state, next_state;
     //assign IMISS=HPM[5];
     //assign LD=HPM[6];
     //assign ST=HPM[7];
     //assign COMP_INSTR=HPM[11];
     //assign BRANCH_TAKEN = HPM[10];
-     assign BRANCH_TAKEN = HPM[2];
+    // assign BRANCH_TAKEN = HPM[2];
     //assign JMP_STALL = HPM[4];
     //assign JUMP =  HPM[8];
     //assign LD_STALL = HPM[1];
-      assign LD_STALL = HPM[3];
+     // assign LD_STALL = HPM[3];
     //assign BRANCH = HPM[9];
     logic  [1:0] alert_test;
     assign alert = alert_test;
@@ -72,16 +75,16 @@ module Detector(
                         case(next_state) 
         Analyze : begin
 
-if(LD_STALL <= K1) begin 
+if(HPM[0] <= K1) begin 
                 // legitime
-                alert_test = 2'b01 ;
+                alert_test = 2'b00 ;
                 endD = 1;
                 next_state <= Monitor;
 
 end   
 else begin 
    alert_counter = alert_counter +1;
-    if(BRANCH_TAKEN <= K2) begin 
+    if(HPM[1] <= K2) begin 
                 alert_test = 2'b10 ; 
                 endD = 1;
                 next_state <= Monitor;

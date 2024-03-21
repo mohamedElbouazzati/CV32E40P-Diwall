@@ -39,33 +39,12 @@ module cv32e41p_core_synth
     parameter Zcec = 0,  // 
     parameter Zcee = 0,  // 
     parameter PULP_ZFINX = 0,  // Float-in-General Purpose registers
-    parameter NUM_MHPMCOUNTERS = 20
+    parameter NUM_MHPMCOUNTERS = 3
 ) (
     // Clock and Reset
     input logic clk_i,
     input logic rst_ni,
-    output logic [11:0]        csr_add_test_i,
-    output logic [31:0]         csr_data_test_i,
-    output logic [31:0]         GT_security_signal, 
 
-    output logic [1:0]          alert_o,
-    output logic                analdone,
-    output logic        [31:0] ewmaRSSI,
-    output        logic [31:0] hpm_RSSI,
-    output        logic [31:0] hpm_SNR,
-    output        logic [63:0] hpm_cycles,
-    output        logic [63:0] hpm_instr,
-    output        logic [63:0] hpm_ld_stall,
-    output        logic [63:0] hpm_jpm_stall,
-    output        logic [63:0] hpm_imiss,
-    output        logic [63:0] hpm_ld,
-    output        logic [63:0] hpm_st,
-    output        logic [63:0] hpm_jump,
-    output        logic [63:0] hpm_branch,
-    output        logic [63:0] hpm_branch_taken,
-    output        logic [63:0] hpm_comp_instr,
-    output        logic [63:0] hpm_pip_stall,
-    output        logic [31:0] hpm_alert_counter,
     input logic pulp_clock_en_i,  // PULP clock enable (only used if PULP_CLUSTER = 1)
     input logic scan_cg_en_i,  // Enable all clock gates for testing
 
@@ -92,7 +71,7 @@ module cv32e41p_core_synth
     output logic [31:0] data_addr_o,
     output logic [31:0] data_wdata_o,
     input  logic [31:0] data_rdata_i,
-
+//    input  logic [1:0] alert_detection,
     // apu-interconnect
     // handshake signals
     output logic                              apu_req_o,
@@ -379,10 +358,6 @@ module cv32e41p_core_synth
   logic [             31:0]       instr_addr_pmp;
   logic                           instr_err_pmp;
 
-
-  // assign our signal to hardware performance counters cycles : 
-  assign GT_security_signal = HPMtracer_i.HPM[0];
-
   // Mux selector for vectored IRQ PC
   assign m_exc_vec_pc_mux_id = (mtvec_mode == 2'b0) ? 5'h0 : exc_cause;
   assign u_exc_vec_pc_mux_id = (utvec_mode == 2'b0) ? 5'h0 : exc_cause;
@@ -393,94 +368,6 @@ module cv32e41p_core_synth
   // APU master signals
   assign apu_flags_o = apu_flags_ex;
   assign fflags_csr = apu_flags_i;
-
- 
-  // instantiate the HPMtracer 
-      // instantiate the HPMtracer
-
-    logic [31:0][63:0]    HPMio;
-    logic enabling;
-    logic donee;
-    logic  [1:0]    alerta;
-
-   // logic [31:0] irg;
-
-    /* assign irqq = irq_i[2];
-    //assign irqq = m_irq_enable;
-*/ 
-  assign csr_data_test_i = cs_registers_i.csr_wdata_int;
- assign csr_add_test_i = cs_registers_i.csr_addr_i;
- assign alert_o =  Detector_i.alert;
- assign analdone = HPMtracer_i.EnableDetect;
- assign hpm_RSSI = HPMtracer_i.HPM[14][31:0];
-  assign hpm_SNR = HPMtracer_i.HPM[14][63:32];
-  assign hpm_cycles = HPMtracer_i.HPM[0];
- assign hpm_instr = HPMtracer_i.HPM[2];
-  assign hpm_ld_stall = HPMtracer_i.HPM[3];
-  assign hpm_jpm_stall = HPMtracer_i.HPM[4];
- assign hpm_imiss = HPMtracer_i.HPM[5];
- assign hpm_ld = HPMtracer_i.HPM[6];
-  assign hpm_st = HPMtracer_i.HPM[7];
- assign hpm_jump = HPMtracer_i.HPM[8];
- assign hpm_branch = HPMtracer_i.HPM[9];
-assign hpm_branch_taken = HPMtracer_i.HPM[10];
- assign hpm_comp_instr = HPMtracer_i.HPM[11];
- assign hpm_pip_stall = HPMtracer_i.HPM[12];
-
-  logic [31:0][63:0] HPMsig ;
-
-  assign HPMsig = cs_registers_i.mhpmcounter_q[31:0];
-  assign hpm_alert_counter = Ewma_i_Decision.alert_counter;
-   HPMtracer_synth HPMtracer_i(
-       .pc_h                (id_stage_i.pc_id_i),
-       .instr_h             (id_stage_i.instr),
-       .clk_h               (clk_i),  
-       .rst_h               (rst_ni),
-       .csr_add           (cs_registers_i.csr_addr_i),
-       .csr_data          (cs_registers_i.csr_wdata_int),
-       .HPM               (HPMsig),  
-       .HPMout              (HPMio),  
-       .EndDetect         (donee),
-       .EnableDetect      (enabling),
-       .target          (alerta)
-  );
-  Detector Detector_i(
-        .clk_h               (clk_i),  
-        .rst_h               (rst_ni),
-        .HPM               (HPMio),
-       // .alert              (),
-        //.endD              (donee),
-        .enableD              (enabling),
-        .alert                  (alerta)
-
-  );
-
-   logic [31:0] ewma_snr_sig;
-   logic [31:0]  ewma_rssi_sig;
-   logic EnableEwmaDecision;
-   assign ewmaRSSI = Ewma_i.ewma_rssi;
- Ewma_snr_rssi Ewma_i(
-        .clk_h               (clk_i),  
-        .rst_h               (rst_ni),
-        .EnableEwma          (enabling),
-        .rssi               (HPMtracer_i.HPMout[14][31:0]),
-        //.rssi               (HPMtracer_i.HPMout[2][31:0]),
-        .ewma_rssi                (ewma_rssi_sig),
-       .endEwma                    (donee),
-        .EnableDecision               (EnableEwmaDecision)
-
-  );
-    Ewma_Decision Ewma_i_Decision(
-        .clk_h               (clk_i),  
-        .rst_h               (rst_ni),
-        .ewma_rssi                (ewma_rssi_sig),
-        .EnableDecision              (EnableEwmaDecision)
-  );
-
-
-
-
-  // instantiate the detector 
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   //   ____ _            _      __  __                                                   _    //
@@ -638,7 +525,7 @@ assign hpm_branch_taken = HPMtracer_i.HPM[10];
       .A_EXTENSION     (A_EXTENSION),
       .APU             (APU),
       .FPU             (FPU),
-      .PULP_ZFINX      (PULP_ZFINX),
+      .PULP_ZFINX           (PULP_ZFINX),
       .APU_NARGS_CPU   (APU_NARGS_CPU),
       .APU_WOP_CPU     (APU_WOP_CPU),
       .APU_NDSFLAGS_CPU(APU_NDSFLAGS_CPU),
@@ -975,7 +862,65 @@ assign hpm_branch_taken = HPMtracer_i.HPM[10];
       .ex_valid_o(ex_valid),
       .wb_ready_i(lsu_ready_wb)
   );
+  
+    logic [2:0][63:0]    HPMio;
+    logic enabling;
+    logic donee;
+   logic donee1;
+   logic doneall;
+  assign doneall = donee ^ donee1;
+    logic  [1:0]    alerta;
+    logic alert_jamm;
+   /// assign alert_detection = HPMtracer_i.target;
+    
+    logic [2:0][63:0] HPMsig ;
 
+  assign HPMsig = cs_registers_i.mhpmcounter_q[2:0];
+  
+   HPMtracer_synth HPMtracer_i(
+       .clk_h               (clk),  
+       .rst_h               (rst_ni),
+       .csr_add           (cs_registers_i.csr_addr_i),
+       .csr_data          (cs_registers_i.csr_wdata_int),
+       .HPM               (HPMsig),  
+       .HPMout              (HPMio),  
+       .EndDetect         (doneall),
+       .EnableDetect      (enabling),
+       .target          (alerta+alert_jamm)
+  );
+  
+    Detector Detector_i(
+        .clk_h               (clk),  
+        .rst_h               (rst_ni),
+        .HPM               (HPMio[1:0]),
+        .endD              (donee),
+        .enableD              (enabling),
+        .alert                  (alerta)
+
+  );
+  
+  
+   logic [31:0]  ewma_rssi_sig;
+   logic EnableEwmaDecision;
+  
+ Ewma_rssi Ewma_i(
+        .clk_h               (clk),  
+        .rst_h               (rst_ni),
+        .EnableEwma          (enabling),
+        .rssi               (HPMtracer_i.HPMout[2][31:0]),
+        .ewma_rssi                (ewma_rssi_sig),
+       .endEwma                    (donee1),
+        .EnableDecision               (EnableEwmaDecision)
+
+  );
+    Ewma_Decision Ewma_i_Decision(
+        .clk_h               (clk),  
+        .rst_h               (rst_ni),
+        .ewma_rssi                (ewma_rssi_sig),
+        .EnableDecision              (EnableEwmaDecision),
+        .Alert_Jamming                (alert_jamm)
+  );
+  
 
   ////////////////////////////////////////////////////////////////////////////////////////
   //    _     ___    _    ____    ____ _____ ___  ____  _____   _   _ _   _ ___ _____   //

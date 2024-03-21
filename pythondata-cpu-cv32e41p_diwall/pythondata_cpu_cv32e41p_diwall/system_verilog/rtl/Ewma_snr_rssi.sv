@@ -19,7 +19,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Ewma_snr_rssi
+module Ewma_rssi
     (
     input logic                 rst_h,
     input logic                clk_h,  
@@ -29,8 +29,9 @@ module Ewma_snr_rssi
     output logic            endEwma,
     output logic            EnableDecision  
     );
-    
-  enum int unsigned {Monitor = 0, Ewma = 1, Init = 2} next_state;
+
+typedef enum logic [1:0] {Monitor =2'b00, Ewma = 2'b01, Init = 2'b10} state;
+ state next_state;
 
   logic   [31:0] state_rssi, state_rssi25, real_rssi, ewmaRSSI;
   assign ewma_rssi = ewmaRSSI;

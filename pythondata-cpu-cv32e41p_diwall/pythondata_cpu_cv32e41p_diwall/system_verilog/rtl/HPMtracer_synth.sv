@@ -20,30 +20,28 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+(* DONT_TOUCH = 1 *)
 module HPMtracer_synth(
     input logic                rst_h,
     input logic                clk_h,
     input logic [11:0]        csr_add,
     input logic [31:0]        csr_data,
-    input logic [31:0]         pc_h,
-    input logic [31:0]         instr_h,
-    input logic [31:0][63:0]   HPM,
-    output logic [31:0][63:0]   HPMout,
+    input logic [2:0][63:0]   HPM,
+    output logic [2:0][63:0]   HPMout,
     input logic                 EndDetect,
     output logic                EnableDetect,
     input logic          [1:0]  target
     
 
     );
-    integer      cycles;
     bit          enableS1;
     bit         disableS1;
     
     assign enableS1 = (csr_add == 12'h320 )&&(csr_data ==32'h0000);
     assign disableS1 = (csr_add == 12'h320 )&&(csr_data ==32'hFFFFFFFF); 
 
-    enum int unsigned {M=0, R=1, W=2} state, next_state;
+   typedef enum logic [1:0] {M=2'b11, R=2'b01, W=2'b10} state;
+   state next_state;
 
 always_ff @(posedge clk_h, negedge rst_h) 
 begin
