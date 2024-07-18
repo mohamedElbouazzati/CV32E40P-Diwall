@@ -40,8 +40,10 @@ module Detector(
     
     //integer K1 = 10770.50;
     //integer K2 = 31.00;
-    localparam K1 = 55;
-    localparam K2 = 595;
+    // localparam K1 = 55;
+    // localparam K2 = 595;
+    localparam K1 = 15;
+    localparam K2 = 9;
     logic [31:0] alert_counter = 0;
 
    // enum int unsigned {Monitor = 0, Analyze = 1 } state, next_state;    // start of detection, heap overflow, legitime, stack overflow
