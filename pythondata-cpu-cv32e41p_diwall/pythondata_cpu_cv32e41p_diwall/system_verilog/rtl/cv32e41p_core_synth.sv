@@ -98,7 +98,12 @@ module cv32e41p_core_synth
 
     // CPU Control Signals
     input  logic fetch_enable_i,
-    output logic core_sleep_o
+    output logic core_sleep_o,
+    // ids in core signals
+    output logic [31:0] alert_counter_jam,
+    output logic [31:0] alert_counter_bo,
+    output logic alert_jam,
+    output logic [1:0] alert_bo
 );
 
   import cv32e41p_pkg::*;
@@ -872,6 +877,10 @@ module cv32e41p_core_synth
     logic  [1:0]    alerta;
     logic alert_jamm;
    /// assign alert_detection = HPMtracer_i.target;
+    assign alert_counter_bo = Detector_i.alert_counter;
+    assign alert_counter_jam = Ewma_i_Decision.alert_counter;
+    assign alert_bo = Detector_i.alert;
+    assign alert_jam = Ewma_i_Decision.Alert_Jamming;
     
     logic [2:0][63:0] HPMsig ;
 
