@@ -32,7 +32,7 @@ module Detector(
     output logic [1:0]          alert,
     input logic                 rst_h,
     input logic                clk_h,
-    input  [1:0][63:0]   HPM,
+    input  [1:0][31:0]   HPM,
     output logic            endD,   
     input logic             enableD
     
@@ -44,7 +44,7 @@ module Detector(
     // localparam K2 = 595;
     localparam K1 = 15;
     localparam K2 = 9;
-    logic [31:0] alert_counter = 0;
+    logic [31:0] alert_counter;
 
    // enum int unsigned {Monitor = 0, Analyze = 1 } state, next_state;    // start of detection, heap overflow, legitime, stack overflow
    typedef enum logic [1:0] {Analyze=2'b00, Monitor=2'b10} state;
@@ -55,10 +55,10 @@ module Detector(
     //assign ST=HPM[7];
     //assign COMP_INSTR=HPM[11];
     //assign BRANCH_TAKEN = HPM[10];
-    // assign BRANCH_TAKEN = HPM[2];
+    // assign BRANCH_TAKEN = HPM[1];
     //assign JMP_STALL = HPM[4];
     //assign JUMP =  HPM[8];
-    //assign LD_STALL = HPM[1];
+    // assign LD_STALL = HPM[0];
      // assign LD_STALL = HPM[3];
     //assign BRANCH = HPM[9];
     logic  [1:0] alert_test;
@@ -77,7 +77,8 @@ module Detector(
                         case(next_state) 
         Analyze : begin
 
-if(HPM[0] <= K1) begin 
+if(HPM[1] <= K1) begin 
+    alert_counter = alert_counter;
                 // legitime
                 alert_test = 2'b00 ;
                 endD = 1;
@@ -85,15 +86,16 @@ if(HPM[0] <= K1) begin
 
 end   
 else begin 
-   alert_counter = alert_counter +1;
-    if(HPM[1] <= K2) begin 
+   
+    if(HPM[0] <= K2) begin 
+        alert_counter = alert_counter +1;
                 alert_test = 2'b10 ; 
                 endD = 1;
                 next_state <= Monitor;
                 //stack overflow
     end
     else begin
-      
+        alert_counter = alert_counter +1;
                alert_test = 2'b11 ; 
                 endD = 1;  
             // heap overflow
@@ -106,7 +108,7 @@ end
     end                 
         Monitor : begin
             endD = 0;
-            alert_test <= 2'b00; // 2 = BO
+            //alert_test <= 2'b00; // 2 = BO
             if(enableD) begin
             next_state=Analyze;
             end
