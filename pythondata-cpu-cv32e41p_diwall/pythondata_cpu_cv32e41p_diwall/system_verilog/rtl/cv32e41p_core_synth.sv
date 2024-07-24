@@ -868,12 +868,12 @@ module cv32e41p_core_synth
       .wb_ready_i(lsu_ready_wb)
   );
   
-    logic [2:0][63:0]    HPMio;
+    logic [2:0][31:0]    HPMio;
     logic enabling;
     logic donee;
    logic donee1;
    logic doneall;
-  assign doneall = donee ^ donee1;
+  // assign doneall = donee;
     logic  [1:0]    alerta;
     logic alert_jamm;
    /// assign alert_detection = HPMtracer_i.target;
@@ -882,10 +882,12 @@ module cv32e41p_core_synth
     assign alert_bo = Detector_i.alert;
     assign alert_jam = Ewma_i_Decision.Alert_Jamming;
     
-    logic [2:0][63:0] HPMsig ;
+    logic [2:0][31:0] HPMsig ;
+    // assign HPMsig[2:0] = cs_registers_i.mhpmcounter_q[5:3][31:0];
+    assign HPMsig[0] = cs_registers_i.mhpmcounter_q[3];
+    assign HPMsig[1] = cs_registers_i.mhpmcounter_q[4];
+    assign HPMsig[2] = cs_registers_i.mhpmcounter_q[5];
 
-  assign HPMsig = cs_registers_i.mhpmcounter_q[2:0];
-  
    HPMtracer_synth HPMtracer_i(
        .clk_h               (clk),  
        .rst_h               (rst_ni),
@@ -893,7 +895,7 @@ module cv32e41p_core_synth
        .csr_data          (cs_registers_i.csr_wdata_int),
        .HPM               (HPMsig),  
        .HPMout              (HPMio),  
-       .EndDetect         (doneall),
+       .EndDetect         (donee1),
        .EnableDetect      (enabling),
        .target          (alerta+alert_jamm)
   );
@@ -902,7 +904,7 @@ module cv32e41p_core_synth
         .clk_h               (clk),  
         .rst_h               (rst_ni),
         .HPM               (HPMio[1:0]),
-        .endD              (donee),
+        .endD              (),
         .enableD              (enabling),
         .alert                  (alerta)
 
@@ -916,7 +918,7 @@ module cv32e41p_core_synth
         .clk_h               (clk),  
         .rst_h               (rst_ni),
         .EnableEwma          (enabling),
-        .rssi               (HPMtracer_i.HPMout[2][31:0]),
+        .rssi               (HPMio[2]),
         .ewma_rssi                (ewma_rssi_sig),
        .endEwma                    (donee1),
         .EnableDecision               (EnableEwmaDecision)
