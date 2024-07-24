@@ -26,8 +26,8 @@ module HPMtracer_synth(
     input logic                clk_h,
     input logic [11:0]        csr_add,
     input logic [31:0]        csr_data,
-    input logic [2:0][63:0]   HPM,
-    output logic [2:0][63:0]   HPMout,
+    input logic [2:0][31:0]   HPM,
+    output logic [2:0][31:0]   HPMout,
     input logic                 EndDetect,
     output logic                EnableDetect,
     input logic          [1:0]  target
